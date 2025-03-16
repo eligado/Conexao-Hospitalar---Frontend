@@ -1,101 +1,24 @@
-"use client";
-import { useEffect, useState } from "react";
-import {
-    Container,
-    Typography,
-    Card,
-    CardContent,
-    CardMedia,
-    Chip,
-    Box,
-    Divider,
-    Link,
-} from "@mui/material";
+import { Container, Typography, Button } from "@mui/material";
+import Link from "next/link";
 
 export default function Home() {
-    const [hospitais, setHospitais] = useState([]);
-    const [isClient, setIsClient] = useState(false);
-
-    useEffect(() => {
-        setIsClient(true);
-        fetch("http://localhost:8000/api/hospitais/")
-            .then((response) => response.json())
-            .then((data) => {
-                setHospitais(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-    }, []);
-
-    if (!isClient) {
-        return null; // Render nothing on the server
-    }
-
     return (
-        <Container maxWidth="md">
-            <Typography variant="h4" component="h1" gutterBottom sx={{ mt: 4, mb: 2 }}>
-                Hospitais Cadastrados
-            </Typography>
-
-            {hospitais.map((hospital) => (
-                <Card key={hospital.codigo} sx={{ mb: 3, boxShadow: 3 }}>
-                    <CardContent>
-                        {hospital.imagem && (
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={`http://localhost:8000/media/${hospital.imagem}`}
-                                alt={hospital.nome}
-                                sx={{ mb: 2 }}
-                            />
-                        )}
-
-                        <Typography variant="h5" gutterBottom>
-                            {hospital.nome}
-                        </Typography>
-
-                        <Typography variant="body2" color="text.secondary">
-                            {hospital.descricao}
-                        </Typography>
-
-                        <Divider sx={{ my: 2 }} />
-
-                        <Box display="flex" flexDirection="column" gap={1}>
-                            <Typography>
-                                <strong>Endereço:</strong> {hospital.endereco}
-                            </Typography>
-                            <Typography>
-                                <strong>Horário de Funcionamento:</strong> {hospital.hora_funcionamento}
-                            </Typography>
-                            <Typography>
-                                <strong>Telefone:</strong>{" "}
-                                <Link href={`tel:${hospital.telefone}`}>{hospital.telefone}</Link>
-                            </Typography>
-                            <Typography>
-                                <strong>Email:</strong>{" "}
-                                <Link href={`mailto:${hospital.email}`}>{hospital.email}</Link>
-                            </Typography>
-                        </Box>
-
-                        <Box sx={{ mt: 2 }}>
-                            <Typography variant="subtitle2">
-                                <strong>Especialidades:</strong>
-                            </Typography>
-                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
-                                {hospital.especialidades.split(",").map((especialidade, index) => (
-                                    <Chip
-                                        key={index}
-                                        label={especialidade.trim()}
-                                        size="small"
-                                        variant="outlined"
-                                    />
-                                ))}
-                            </Box>
-                        </Box>
-                    </CardContent>
-                </Card>
-            ))}
-        </Container>
+        <div className="layout">
+            <main className="content">
+                <Container maxWidth="sm" style={{ textAlign: "center", marginTop: "50px" }}>
+                    <Typography variant="h4" gutterBottom>
+                        Bem-vindo ao Sistema de Hospitais
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                        Clique no botão abaixo para ver a lista de hospitais.
+                    </Typography>
+                    <Link href="/hospitais" passHref>
+                        <Button variant="contained" color="primary" size="large">
+                            Ver Hospitais
+                        </Button>
+                    </Link>
+                </Container>
+            </main>
+        </div>
     );
 }
