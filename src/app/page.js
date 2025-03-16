@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import {
     Container,
@@ -9,13 +9,15 @@ import {
     Chip,
     Box,
     Divider,
-    Link
+    Link,
 } from "@mui/material";
 
 export default function Home() {
     const [hospitais, setHospitais] = useState([]);
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
+        setIsClient(true);
         fetch("http://localhost:8000/api/hospitais/")
             .then((response) => response.json())
             .then((data) => {
@@ -25,6 +27,10 @@ export default function Home() {
                 console.error("Error fetching data:", error);
             });
     }, []);
+
+    if (!isClient) {
+        return null; // Render nothing on the server
+    }
 
     return (
         <Container maxWidth="md">
@@ -49,15 +55,19 @@ export default function Home() {
                             {hospital.nome}
                         </Typography>
 
-                        <Typography variant="body2" color="text.secondary" >
+                        <Typography variant="body2" color="text.secondary">
                             {hospital.descricao}
                         </Typography>
 
                         <Divider sx={{ my: 2 }} />
 
                         <Box display="flex" flexDirection="column" gap={1}>
-                            <Typography><strong>Endereço:</strong> {hospital.endereco}</Typography>
-                            <Typography><strong>Horário de Funcionamento:</strong> {hospital.hora_funcionamento}</Typography>
+                            <Typography>
+                                <strong>Endereço:</strong> {hospital.endereco}
+                            </Typography>
+                            <Typography>
+                                <strong>Horário de Funcionamento:</strong> {hospital.hora_funcionamento}
+                            </Typography>
                             <Typography>
                                 <strong>Telefone:</strong>{" "}
                                 <Link href={`tel:${hospital.telefone}`}>{hospital.telefone}</Link>
@@ -69,9 +79,11 @@ export default function Home() {
                         </Box>
 
                         <Box sx={{ mt: 2 }}>
-                            <Typography variant="subtitle2"><strong>Especialidades:</strong></Typography>
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
-                                {hospital.especialidades.split(',').map((especialidade, index) => (
+                            <Typography variant="subtitle2">
+                                <strong>Especialidades:</strong>
+                            </Typography>
+                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
+                                {hospital.especialidades.split(",").map((especialidade, index) => (
                                     <Chip
                                         key={index}
                                         label={especialidade.trim()}
