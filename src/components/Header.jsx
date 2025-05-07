@@ -39,54 +39,11 @@ function ResponsiveAppBar() {
     };
 
     return (
-        <AppBar position="static">
-            <Container maxWidth="xl">
+        <AppBar position="static" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>            <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
-                        <Typography variant="h6">Conexão Hospitalar</Typography>
-                    </Link>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{ display: { xs: 'block', md: 'none' } }}
-                        >
-                            {pages.map((page) => (
-                                <Link
-                                    key={page}
-                                    href={`/${page.toLowerCase()}`}
-                                    style={{ textDecoration: "none", color: "inherit" }}
-                                >
-                                    <MenuItem onClick={handleCloseNavMenu}>
-                                        <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                                    </MenuItem>
-                                </Link>
-                            ))}
-                        </Menu>
-                    </Box>
+
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
                     <Typography
                         variant="h5"
@@ -123,11 +80,13 @@ function ResponsiveAppBar() {
                         ))}
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Abrir configurações">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Login" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
+                       <Tooltip title="Entrar / Registrar-se">
+                           <Link href="/login" passHref>
+                               <IconButton sx={{ p: 0 }}>
+                                   <Avatar alt="Login" src="/static/images/avatar/2.jpg" />
+                               </IconButton>
+                           </Link>
+                       </Tooltip>
                         <Menu
                             sx={{ mt: '45px' }}
                             id="menu-appbar"
