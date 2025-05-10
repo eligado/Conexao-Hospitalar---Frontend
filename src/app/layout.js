@@ -1,9 +1,9 @@
-// src/app/layout.js
 "use client";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./global.css";
 import Header from "../components/Header";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,14 +17,19 @@ const geistMono = Geist_Mono({
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
-  const hideHeaderRoutes = ["/login", "/register"];
+  const [showHeader, setShowHeader] = useState(false);
+
+  useEffect(() => {
+    const hideHeaderRoutes = ["/login", "/register"];
+    setShowHeader(!hideHeaderRoutes.includes(pathname));
+  }, [pathname]);
 
   return (
-    <html lang="pt-br">
+      <html lang="pt-br">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {!hideHeaderRoutes.includes(pathname) && <Header />}
-        {children}
+      {showHeader && <Header />}
+      {children}
       </body>
-    </html>
+      </html>
   );
 }

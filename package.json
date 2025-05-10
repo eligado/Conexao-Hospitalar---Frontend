@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.7",
     "@mui/material": "^6.4.5",
+    "@react-google-maps/api": "^2.20.6",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
