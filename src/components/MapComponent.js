@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import React, { useState, useEffect, useRef } from 'react';
+import { GoogleMap, useLoadScript, Marker} from '@react-google-maps/api';
 import { Box, TextField } from '@mui/material';
 
 const containerStyle = {
@@ -7,7 +7,7 @@ const containerStyle = {
     height: '100vh',
 };
 
-const center = {
+const defaultCenter = {
     lat: -3.119028,
     lng: -60.021731,
 };
@@ -19,7 +19,8 @@ export default function MapComponent() {
     });
 
     const [map, setMap] = useState(null);
-    const [markerPosition, setMarkerPosition] = useState(center);
+    const [markerPosition, setMarkerPosition] = useState(defaultCenter);
+    const [currentLocation, setCurrentLocation] = useState(null);
     const inputRef = useRef(null);
     const autocompleteRef = useRef(null);
 
@@ -30,19 +31,44 @@ export default function MapComponent() {
                 const place = autocomplete.getPlace();
                 if (place.geometry && place.geometry.location) {
                     const location = place.geometry.location;
-                    setMarkerPosition({
+                    const newPosition = {
                         lat: location.lat(),
                         lng: location.lng(),
-                    });
-                    map.panTo(location);
+                    };
+                    setMarkerPosition(newPosition);
+                    map.panTo(newPosition);
                 }
             });
             autocompleteRef.current = autocomplete;
         }
     }, [isLoaded, map]);
 
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    const newPosition = {
+                        lat: latitude,
+                        lng: longitude,
+                    };
+                    setCurrentLocation(newPosition);
+                    setMarkerPosition(newPosition);
+                    if (map) {
+                        map.panTo(newPosition);
+                    }
+                },
+                (error) => {
+                    console.error('Erro ao obter localização:', error);
+                }
+            );
+        } else {
+            console.error('Geolocalização não é suportada por este navegador.');
+        }
+    }, [map]);
+
     if (loadError) return <div>Erro ao carregar o mapa</div>;
-    if (!isLoaded) return <div></div>;
+    if (!isLoaded) return <div>Carregando mapa...</div>;
 
     return (
         <>
@@ -71,12 +97,10 @@ export default function MapComponent() {
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={markerPosition}
-                zoom={13}
+                zoom={15}
                 onLoad={(mapInstance) => setMap(mapInstance)}
                 options={{
                     fullscreenControl: false,
-                    streetViewControl: false,
-                    mapTypeControl: false,
                 }}
             >
                 <Marker position={markerPosition} />
