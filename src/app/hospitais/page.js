@@ -16,13 +16,18 @@ export default function Page() {
     const [hospitais, setHospitais] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8000/api/hospitais/")
-            .then((response) => response.json())
+        fetch("http://127.0.0.1:8000/api/hospitais/")
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then((data) => {
                 setHospitais(data);
             })
             .catch((error) => {
-                console.error("Erro ao buscar dados:", error);
+                console.error("Fetch error:", error);
             });
     }, []);
 
@@ -39,7 +44,7 @@ export default function Page() {
                             <CardMedia
                                 component="img"
                                 height="200"
-                                image={`http://localhost:8000/${hospital.imagem}`}
+                                image={`http://127.0.0.1:8000/${hospital.imagem}`}
                                 alt={hospital.nome}
                                 sx={{ mb: 2 }}
                             />
