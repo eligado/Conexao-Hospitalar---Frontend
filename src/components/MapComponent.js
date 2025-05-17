@@ -25,11 +25,18 @@ export default function MapaHospitais() {
   const [novaNota, setNovaNota] = useState(0);
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState(false);
+  const [usuario, setUsuario] = useState(null);
+  const [token, setToken] = useState(null);
 
-  const usuario = typeof window !== "undefined" && localStorage.getItem("usuario")
-    ? JSON.parse(localStorage.getItem("usuario"))
-    : null;
-  const token = localStorage.getItem("access") || sessionStorage.getItem("access");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUsuario = localStorage.getItem("usuario");
+      const storedToken = localStorage.getItem("access") || sessionStorage.getItem("access");
+
+      setUsuario(storedUsuario ? JSON.parse(storedUsuario) : null);
+      setToken(storedToken);
+    }
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:8000/api/hospitais/")
