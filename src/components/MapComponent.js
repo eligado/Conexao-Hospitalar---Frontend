@@ -30,11 +30,11 @@ export default function MapaHospitais() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedUsuario = localStorage.getItem("usuario");
+      const storedUsuario = localStorage.getItem("usuario") || sessionStorage.getItem("usuario");
       const storedToken = localStorage.getItem("access") || sessionStorage.getItem("access");
 
       setUsuario(storedUsuario ? JSON.parse(storedUsuario) : null);
-      setToken(storedToken);
+      setToken(storedToken || null);
     }
   }, []);
 

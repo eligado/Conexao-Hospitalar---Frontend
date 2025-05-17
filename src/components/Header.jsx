@@ -14,7 +14,7 @@ export default function ResponsiveAppBar() {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    const userData = localStorage.getItem("usuario");
+    const userData = localStorage.getItem("usuario") || sessionStorage.getItem("usuario");
     if (userData) {
       setUsuario(JSON.parse(userData));
     }
@@ -29,9 +29,11 @@ export default function ResponsiveAppBar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("usuario");
+    localStorage.clear();
+    sessionStorage.clear();
     setUsuario(null);
     handleClose();
+    window.location.reload();
   };
 
   return (
