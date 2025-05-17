@@ -1,0 +1,20 @@
+/* [project]/src/app/global.css [app-client] (css) */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*# sourceMappingURL=src_app_global_b52d8e.css.map*/
