@@ -14,6 +14,8 @@ export default function HospitalModal({
                                           mensagem,
                                           erro,
                                           usuario,
+                                          userLocation,
+                                          handleComoChegar,
                                       }) {
     const [comentariosVisiveis, setComentariosVisiveis] = useState(5);
 
@@ -169,6 +171,12 @@ export default function HospitalModal({
                                     <Alert severity={erro ? "error" : "success"}>{mensagem}</Alert>
                                 </Box>
                             )}
+
+                            {/* Botão para rota */}
+
+                                <Button onClick={handleComoChegar}>Como chegar</Button>
+
+
                         </Box>
                     </Grid>
                 </Grid>
