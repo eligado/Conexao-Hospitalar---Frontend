@@ -14,7 +14,6 @@ export default function HospitalModal({
                                           mensagem,
                                           erro,
                                           usuario,
-                                          userLocation,
                                           handleComoChegar,
                                       }) {
     const [comentariosVisiveis, setComentariosVisiveis] = useState(5);
@@ -97,14 +96,14 @@ export default function HospitalModal({
                     >
                         <Typography variant="h6">Comentários</Typography>
 
-                        {comentarios.length > 0 && (
+
                             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
                                 <Rating value={mediaEstrelas} readOnly precision={0.5} />
                                 <Typography variant="body2" color="text.secondary">
-                                    ({comentarios.length} avaliaçõe{comentarios.length > 1 ? "s" : ""})
+                                    ({comentarios.length} {comentarios.length === 1 ? "avaliação" : "avaliações"})
                                 </Typography>
                             </Box>
-                        )}
+
 
                         <Divider sx={{ my: 2 }} />
 
@@ -134,6 +133,9 @@ export default function HospitalModal({
                         )}
 
                         <Box sx={{ mt: 2 }}>
+                            <Typography variant="body2" color="text.secondary">
+                                Deixe sua avaliação:
+                            </Typography>
                             <Rating
                                 name="avaliacao"
                                 value={novaNota}
